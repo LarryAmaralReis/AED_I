@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include <stdlib.h> // Include the required header for strtod
+#include <stdlib.h>
 #include "cubo.h"
 
 int main() {
@@ -9,7 +9,7 @@ int main() {
 
     printf("Digite o tamanho do lado do cubo: ");
     fgets(input, sizeof(input), stdin);
-    lado = strtod(input, NULL); // Use strtod to convert the input string to a double
+    lado = strtod(input, NULL);
 
     inicializaCubo(&c, lado);
 
