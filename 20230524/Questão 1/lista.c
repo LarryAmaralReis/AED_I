@@ -54,18 +54,20 @@ void imprimirLista(LISTA *l) {
     printf("]\n");
 }
 
-
 int buscarElementoSequencial(LISTA *l, int elemento) {
     if (l->tam_vetor == 0) {
         printf("Lista nao criada.\n");
         return -1;
     }
-    int i;
+    int i, comp = 0;
     for (i = 0; i < l->tam_vetor; i++) {
+        comp++;
         if (l->vetor[i] == elemento) {
+            printf("Elemento encontrado ao fazer %d comparacoes.\n", comp);
             return i;
         }
     }
+    printf("Elemento nao encontrado, %d comparacoes executadas.\n", comp);
     return -1;
 }
 
@@ -74,14 +76,18 @@ int buscarElementoSequencialOrdenado(LISTA *l, int elemento) {
         printf("Lista nao criada.\n");
         return -1;
     }
-    int i;
+    int i, comp = 0;
     for (i = 0; i < l->tam_vetor; i++) {
+        comp++;
         if (l->vetor[i] == elemento) {
+            printf("Elemento encontrado ao fazer %d comparacoes.\n", comp);
             return i;
         } else if (l->vetor[i] > elemento) {
+            printf("Elemento nao encontrado, %d comparacoes executadas.\n", comp);
             return -1;
         }
     }
+    printf("Elemento nao encontrado, %d comparacoes executadas.\n", comp);
     return -1;
 }
 
@@ -90,12 +96,14 @@ int buscarElementoBinarioIterativo(LISTA *l, int elemento) {
         printf("Lista nao criada.\n");
         return -1;
     }
+    int comp = 0;
     int primeiro = 0;
     int ultimo = l->tam_vetor - 1;
     while (primeiro <= ultimo) {
+        comp++;
         int meio = (primeiro + ultimo) / 2;
-
         if (l->vetor[meio] == elemento) {
+            printf("Elemento encontrado ao fazer %d comparacoes.\n", comp);
             return meio;
         } else if (l->vetor[meio] < elemento) {
             primeiro = meio + 1;
@@ -103,24 +111,27 @@ int buscarElementoBinarioIterativo(LISTA *l, int elemento) {
             ultimo = meio - 1;
         }
     }
+    printf("Elemento nao encontrado, %d comparacoes executadas.\n", comp);
     return -1;
 }
 
-int buscarElementoBinarioRecursivo(LISTA *l, int elemento, int primeiro, int ultimo) {
+int buscarElementoBinarioRecursivo(LISTA *l, int elemento, int primeiro, int ultimo, int comp) {
     if (l->tam_vetor == 0) {
         printf("Lista não criada.\n");
         return -1;
     }
     if (primeiro > ultimo) {
+        printf("Elemento nao encontrado, %d comparacoes executadas.\n", comp);
         return -1;
     }
     int meio = (primeiro + ultimo) / 2;
     if (elemento == l->vetor[meio]) {
+        printf("Elemento encontrado ao fazer %d comparacoes.\n", comp);
         return meio;
     } else if (elemento < l->vetor[meio]) {
-        return buscarElementoBinarioRecursivo(l, elemento, primeiro, meio - 1);
+        return buscarElementoBinarioRecursivo(l, elemento, primeiro, meio - 1, comp + 1);
     } else {
-        return buscarElementoBinarioRecursivo(l, elemento, meio + 1, ultimo);
+        return buscarElementoBinarioRecursivo(l, elemento, meio + 1, ultimo, comp + 1);
     }
 }
 

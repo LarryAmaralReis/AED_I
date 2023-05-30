@@ -14,7 +14,7 @@ void imprimirLista(LISTA *l);
 int buscarElementoSequencial(LISTA *l, int elemento);
 int buscarElementoSequencialOrdenado(LISTA *l, int elemento);
 int buscarElementoBinarioIterativo(LISTA *l, int elemento);
-int buscarElementoBinarioRecursivo(LISTA *l, int elemento, int primeiro, int ultimo);
+int buscarElementoBinarioRecursivo(LISTA *l, int elemento, int primeiro, int ultimo, int comp);
 void imprimirListaRecursiva(LISTA *l);
 int buscarMaiorElementoIterativo(LISTA *l);
 int buscarMaiorElementoRecursivo(LISTA *l, int indice);

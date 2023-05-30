@@ -56,7 +56,7 @@ int main() {
         printf("Resultado da busca sequencial ordenada = %d\n", buscarElementoSequencialOrdenado(&lista, elemento));
         printf("Resultado da busca binaria iterativa = %d\n", buscarElementoBinarioIterativo(&lista, elemento));
         printf("Resultado da busca binaria recursiva = %d\n",
-               buscarElementoBinarioRecursivo(&lista, elemento, 0, lista.tam_vetor - 1));
+               buscarElementoBinarioRecursivo(&lista, elemento, 0, lista.tam_vetor - 1,0));
     }
 
     // Liberar o espaço na memória da lista
