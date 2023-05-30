@@ -11,7 +11,7 @@ void criarTurma(TURMA *t, int quantidade_alunos) {
 
 void liberarTurma(TURMA *t) {
     free(t->lista_alunos);
-    t->quantidade_alunos = 0;
+    free(t);
 }
 
 void inserirAluno(TURMA *t, int posicao, const char *nome, int idade, float coeficiente) {
@@ -19,9 +19,9 @@ void inserirAluno(TURMA *t, int posicao, const char *nome, int idade, float coef
         printf("Posicao invalida.\n");
         return;
     }
-
+    static int codigo_aluno = 0;
     ALUNO aluno;
-    aluno.codigo_aluno = rand();
+    aluno.codigo_aluno = codigo_aluno++;
     strcpy(aluno.nome_aluno, nome);
     aluno.idade_aluno = idade;
     aluno.coeficiente_aluno = coeficiente;
@@ -50,25 +50,23 @@ void buscarAlunoSequencial(TURMA *t, int codigo_aluno) {
             return;
         }
     }
-    printf("Aluno não encontrado.\n");
+    printf("Aluno nao encontrado sequencialmente.\n");
 }
 
 void buscarAlunoBinarioRecursivo(TURMA *t, int codigo_aluno, int primeiro, int ultimo) {
     if (ultimo >= primeiro) {
         int meio = primeiro + (ultimo - primeiro) / 2;
-
         if (t->lista_alunos[meio].codigo_aluno == codigo_aluno) {
             imprimirDadosAluno(&(t->lista_alunos[meio]));
             return;
         }
-
         if (t->lista_alunos[meio].codigo_aluno > codigo_aluno) {
             buscarAlunoBinarioRecursivo(t, codigo_aluno, primeiro, meio - 1);
         } else {
             buscarAlunoBinarioRecursivo(t, codigo_aluno, meio + 1, ultimo);
         }
     } else {
-        printf("Aluno não encontrado.\n");
+        printf("Aluno nao encontrado recursivamente.\n");
     }
 }
 
@@ -77,7 +75,7 @@ void imprimirDadosAluno(ALUNO *aluno) {
         printf("Codigo do Aluno: %d\n", aluno->codigo_aluno);
         printf("Nome do Aluno: %s\n", aluno->nome_aluno);
         printf("Idade do Aluno: %d\n", aluno->idade_aluno);
-        printf("Coeficiente do Aluno: %.2f\n", aluno->coeficiente_aluno);
+        printf("Coeficiente do Aluno: %.2f\n\n", aluno->coeficiente_aluno);
     } else {
         printf("Aluno não encontrado.\n");
     }
