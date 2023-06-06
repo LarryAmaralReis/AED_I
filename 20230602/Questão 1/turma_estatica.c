@@ -1,5 +1,4 @@
 #include <stdio.h>
-#include <stdlib.h>
 #include <stdbool.h>
 #include "turma_estatica.h"
 
@@ -29,6 +28,8 @@ int tamanho(LISTA_MATRICULA *m) {
         tam++;
         i = m->turma[i].proximo;
     }
+    if(tam == 0) printf("Lista vazia");
+    if(tam == 100) printf("Lista cheia");
     return tam;
 }
 
@@ -77,7 +78,7 @@ bool inserirAluno(LISTA_MATRICULA *m, ALUNO novo_aluno) {
         pos_inserir = i;
         i = m->turma[i].proximo;
     }
-    if ((i != -1) && (novo_aluno.matricula == m->turma[i].alun.matricula)) {//pos_inserir
+    if ((i != -1) && (novo_aluno.matricula == m->turma[i].alun.matricula)) {//m->turma[pos_inserir]
         return false;
     }
     i = obterNo(m);
@@ -121,13 +122,25 @@ bool excluirAluno(LISTA_MATRICULA *m, int matricula_aluno) {
     return true;
 }
 
+bool alterarMatricula(LISTA_MATRICULA *m, int matricula_aluno, int nova_matricula) {
+    int i = m->inicio;
+    while (i != -1 && m->turma[i].alun.matricula != matricula_aluno) {
+        i = m->turma[i].proximo;
+    }
+    if (i == -1) {
+        return false; // Aluno não encontrado
+    }
+    ALUNO aluno_antigo = m->turma[i].alun; // Salvar o aluno antigo
 
+    excluirAluno(m, matricula_aluno);
 
+    ALUNO novo_aluno = {
+            .matricula = nova_matricula,
+            .nome = aluno_antigo.nome,
+            .idade = aluno_antigo.idade
+    };
 
+    inserirAluno(m, novo_aluno);
 
-
-
-
-
-
-
+    return true;
+}

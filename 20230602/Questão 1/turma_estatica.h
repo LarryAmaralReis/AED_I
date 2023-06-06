@@ -28,5 +28,6 @@ int obterNo(LISTA_MATRICULA *m);
 void alocarNo(LISTA_MATRICULA *m, int i);
 bool inserirAluno(LISTA_MATRICULA *m, ALUNO novo_aluno);
 bool excluirAluno(LISTA_MATRICULA *m, int matricula_aluno);
+bool alterarMatricula(LISTA_MATRICULA *m, int matricula_aluno, int nova_matricula);
 
 #endif //TURMA_ESTATICA_H

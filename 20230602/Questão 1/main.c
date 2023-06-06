@@ -4,7 +4,7 @@
 int main() {
     LISTA_MATRICULA m;
     iniciaLista_M(&m);
-    printf("%d\n", tamanho(&m));
+    printf("Quantidade de elementos validos na lista: %d\n", tamanho(&m));
     ALUNO a;
     a.matricula = 22;
     a.nome = "Karla";
@@ -35,12 +35,14 @@ int main() {
     a.nome = "Esteban";
     a.idade = 23;
     inserirAluno(&m,a);
-
-    printf("%d\n", tamanho(&m));
     mostrarLista_M(&m);
+    printf("Quantidade de elementos validos na lista: %d\n", tamanho(&m));
     excluirAluno(&m, 30);
-    printf("%d\n", tamanho(&m));
     mostrarLista_M(&m);
+    printf("Quantidade de elementos validos na lista: %d\n", tamanho(&m));
+    alterarMatricula(&m, 12, 35);
+    mostrarLista_M(&m);
+    printf("Quantidade de elementos validos na lista: %d\n", tamanho(&m));
 
     return 0;
 }
