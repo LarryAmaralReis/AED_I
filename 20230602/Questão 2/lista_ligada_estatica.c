@@ -82,9 +82,19 @@ LISTA_LIGADA_ESTATICA construirL1b(LISTA_LIGADA_ESTATICA *L) {
     while (i != -1) {
         inserirElemento(&L1, L->lista[i].valor);
         i = L->lista[i].proximo;
-        if (i == L->inicio) // adiciona a verificação para evitar loop infinito quando i é igual a L->inicio
-            break;
     }
+
+    int atual = L1.inicio;
+    int anterior = -1;
+    int proximo;
+    while (atual != -1) {
+        proximo = L1.lista[atual].proximo;
+        L1.lista[atual].proximo = anterior;
+        anterior = atual;
+        atual = proximo;
+    }
+    L1.inicio = anterior;
 
     return L1;
 }
+
