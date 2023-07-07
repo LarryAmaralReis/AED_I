@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include "pac_array.c"
+#include "pac_hash_ligado.c"
 
 int main(){
 	TB_HASH tabela;
