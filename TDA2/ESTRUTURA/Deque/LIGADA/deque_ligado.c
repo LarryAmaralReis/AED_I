@@ -256,6 +256,18 @@ int buscarPosicaoPorCPF(DEQUE *d, const char *cpf) {
         return -1; // Paciente com o CPF não encontrado
 }
 
+int PilhasEmFila( DEQUE *pilha1, DEQUE *pilha2, DEQUE *fila){
+    if (pilha1->cabeca->proximo==pilha1->cabeca || pilha2->cabeca->proximo==pilha2->cabeca) return 0;
+    while (pilha1->cabeca->proximo!=pilha1->cabeca && pilha2->cabeca->proximo!=pilha2->cabeca)
+    {
+        inserirPacienteFim(fila, getPacienteInicio(pilha1));
+        excluirPacienteInicio(pilha1);
+        inserirPacienteFim(fila, getPacienteInicio(pilha2));
+        excluirPacienteInicio(pilha2);
+    }
+    return 1;
+}
+
 
 
 
