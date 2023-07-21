@@ -40,8 +40,18 @@ ELEMENTO firstELEMENTO (PILHA *p){
     return *(p->topo);
 }
 
+ELEMENTO *primeiroELEMENTO(PILHA *p) {
+    //if (p->topo == NULL) return NULL;
+    return p->topo;
+}
+
 LIVRO firstLIVRO (PILHA *p){
     return p->topo->liv;
+}
+
+LIVRO *primeiroLIVRO(PILHA *p) {
+    //if (p->topo == NULL) return NULL;
+    return &(p->topo->liv);
 }
 
 int imprimirPilha (PILHA p){
@@ -252,3 +262,32 @@ int retornarPosicaoPorISBN(PILHA p, int isbn) {
 
     return posicaoEncontrada;
 }
+
+LIVRO* excluirTopoEPegarLivro(PILHA *p) {
+    if (p->topo == NULL) return NULL;
+    LIVRO* livroExcluido = (LIVRO*)malloc(sizeof(LIVRO));
+    if (livroExcluido == NULL) return NULL;
+    *livroExcluido = p->topo->liv;
+    ELEMENTO *e = p->topo;
+    p->topo = p->topo->proximo;
+    free(e);
+    return livroExcluido;
+}
+
+LIVRO excluirTopoEPegarLivro1(PILHA *p){
+    if (p->topo == NULL) {
+        LIVRO livroVazio;
+        livroVazio.isbn = -1;
+        livroVazio.titulo = "Pilha Vazia";
+        livroVazio.autor = "";
+        livroVazio.qtd_paginas = 0;
+        livroVazio.preco = 0.0;
+        return livroVazio;
+    }
+    LIVRO livroExcluido = p->topo->liv;
+    ELEMENTO *temp = p->topo;
+    p->topo = p->topo->proximo;
+    free(temp);
+    return livroExcluido;
+}
+

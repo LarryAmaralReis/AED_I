@@ -24,11 +24,15 @@ int inserirLivro (PILHA *p, LIVRO novo_livro);
 int excluirLivro (PILHA *p);
 ELEMENTO firstELEMENTO (PILHA *p);
 LIVRO firstLIVRO (PILHA *p);
+LIVRO* primeiroLIVRO(PILHA *p);
+ELEMENTO* primeiroELEMENTO(PILHA *p);
 int imprimirPilha (PILHA p);
 LIVRO encontrarLivroMaiorPaginas(PILHA *p);
 LIVRO encontrarLivroMenorPreco(PILHA *p);
 void calcularMediaPrecos(PILHA *p);
 int removerLivroPorISBN(PILHA *p, int isbn);
 int retornarPosicaoPorISBN(PILHA p, int isbn);
+LIVRO* excluirTopoEPegarLivro(PILHA *p);
+LIVRO excluirTopoEPegarLivro1(PILHA *p);
 
 #endif

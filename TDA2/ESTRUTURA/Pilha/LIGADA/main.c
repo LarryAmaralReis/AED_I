@@ -72,4 +72,53 @@ int main(){
     int pos = retornarPosicaoPorISBN(pilha, 3); 
 
     printf("\nO livro procurado esta na posicao: %d", pos);
+
+    LIVRO* livroRemovidoPtr = excluirTopoEPegarLivro(&pilha);
+
+    if (livroRemovidoPtr != NULL) {
+        printf("\n-----------------------------------");
+        printf("\n Livro removido:");
+        printf("\n ISBN: %d", livroRemovidoPtr->isbn);
+        printf("\n Titulo: %s", livroRemovidoPtr->titulo);
+        printf("\n Autor: %s", livroRemovidoPtr->autor);
+        printf("\n Quantidade de paginas: %d", livroRemovidoPtr->qtd_paginas);
+        printf("\n Preco do livro: %f", livroRemovidoPtr->preco);
+
+        free(livroRemovidoPtr);
+    }
+    
+    LIVRO* primeiroLivroPtr = primeiroLIVRO(&pilha);
+
+    if (primeiroLivroPtr != NULL) {
+        printf("\n-----------------------------------\n");
+        printf("Primeiro livro:\n");
+        printf("ISBN: %d\n", primeiroLivroPtr->isbn);
+        printf("Titulo: %s\n", primeiroLivroPtr->titulo);
+        printf("Autor: %s\n", primeiroLivroPtr->autor);
+        printf("Quantidade de paginas: %d\n", primeiroLivroPtr->qtd_paginas);
+        printf("Preco do livro: %f\n", primeiroLivroPtr->preco);
+    }
+
+    LIVRO livroRemovido = excluirTopoEPegarLivro1(&pilha);
+    printf("\n-----------------------------------\n");
+    printf("Livro removido:\n");
+    printf("ISBN: %d\n", livroRemovido.isbn);
+    printf("Titulo: %s\n", livroRemovido.titulo);
+    printf("Autor: %s\n", livroRemovido.autor);
+    printf("Quantidade de paginas: %d\n", livroRemovido.qtd_paginas);
+    printf("Preco do livro: %f\n", livroRemovido.preco);
+
+    ELEMENTO* primeiroElementoPtr = primeiroELEMENTO(&pilha);
+
+    if (primeiroElementoPtr != NULL) {
+
+        LIVRO primeiroLivro = primeiroElementoPtr->liv;
+        printf("Primeiro livro elemento:\n");
+        printf("ISBN: %d\n", primeiroLivro.isbn);
+        printf("Titulo: %s\n", primeiroLivro.titulo);
+        printf("Autor: %s\n", primeiroLivro.autor);
+        printf("Quantidade de paginas: %d\n", primeiroLivro.qtd_paginas);
+        printf("Preco do livro: %f\n", primeiroLivro.preco);
+    }
+
 }
