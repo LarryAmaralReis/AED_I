@@ -1,5 +1,5 @@
-#ifndef TESTE_H
-#define TESTE_H
+#ifndef ARV_BINARIA_H
+#define ARV_BINARIA_H
 
 // Definição da estrutura do nó da árvore
 typedef struct No {

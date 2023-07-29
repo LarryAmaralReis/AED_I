@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "teste.h"
+#include "arv_binaria.h"
 
 // Função para criar um novo nó
 NO* createNode(char data) {

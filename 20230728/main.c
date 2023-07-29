@@ -1,4 +1,4 @@
-#include "teste.c"
+#include "arv_binaria.c"
 
 int main() {
     char expressao[] = "a*((b-c)/d)";
