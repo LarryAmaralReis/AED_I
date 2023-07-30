@@ -1,42 +1,48 @@
-#ifndef ARV_BINARIA_H
-#define ARV_BINARIA_H
+#ifndef ARVORE_BINARIA_H
+#define ARVORE_BINARIA_H
 
-// Definição da estrutura do nó da árvore
-typedef struct No {
+typedef struct NO{
     char chave;
-    struct No* esquerda;
-    struct No* direita;
+    struct NO* esquerda;
+    struct NO* direita;
 } NO;
 
 typedef struct {
-    NO *raiz;
+    NO* raiz;
 } ARVORE;
 
-// Estrutura da pilha
 typedef struct NoPilha {
-    NO* chave;
-    struct NoPilha* proximo;
+    NO *chave;
+    struct NoPilha *proximo;
 } NoPilha;
 
-typedef struct Stack {
-    NoPilha* topo;
+typedef struct {
+    NoPilha *topo;
 } PILHA;
 
-NO* createNode(char chave);
-PILHA* createStack();
-int isStackEmpty(PILHA* pilha);
-void push(PILHA* pilha, NO* chave);
-NO* pop(PILHA* pilha);
-NO* peek(PILHA* pilha);
-int isOperator(char ch);
-int precedence(char ch);
-NO* infixToExpressionTree(char expressao[]);
-void inorderTraversal(NO* raiz);
-void postorderTraversal(NO* raiz);
-void preorderTraversal(NO* raiz);
-void Infixa(NO* raiz);
-void Posfixa(NO* raiz);
-void Prefixa(NO* raiz);
-int evaluateExpression(NO* raiz);
+//Arvore
+void inicializarArvore (ARVORE* a);
+NO* inserir (NO* raiz, NO* no);
+bool adiciona_aux(ARVORE* a, NO* novo);
+bool adiciona (ARVORE* a, char valor);
+void pre_ordem (NO* raiz);
+void prefixa (ARVORE *a);
+void in_ordem (NO* raiz);
+void infixa(ARVORE *a);
+void pos_ordem (NO* raiz);
+void posfixa (ARVORE *a);
+//Pilha
+void inicializarPilha (PILHA *p);
+int pilhaVazia (PILHA *p);
+int push (PILHA *p, NO *nova_chave);
+int pop (PILHA *p);
+NO *peek (PILHA *p);
+bool ehOperador (char ch);
+bool ehOperando (char ch);
+bool precedencia (char ch);
+NO* criarNo (char valor);
+ARVORE construirArvore (char *expressao);
+int resultadoArvore (ARVORE *a);
+int resultadoArvoreAux (NO* raiz);
 
 #endif

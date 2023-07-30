@@ -1,23 +1,23 @@
 #include "arv_binaria.c"
 
 int main() {
-    char expressao[] = "a*((b-c)/d)";
-    NO* raiz = infixToExpressionTree(expressao);
+    ARVORE minhaArvore;
+    inicializarArvore(&minhaArvore);
+
+    char expression[] = "(a*((b-c)/d))";
+
+    minhaArvore = construirArvore(expression);
 
     printf("Expressão infixa: ");
-    Infixa(raiz);
-    printf("\n");
-
-    printf("Expressão posfixa: ");
-    Posfixa(raiz);
-    printf("\n");
+    infixa(&minhaArvore);
 
     printf("Expressão prefixa: ");
-    Prefixa(raiz);
-    printf("\n");
+    prefixa(&minhaArvore);
 
-    int resultado = evaluateExpression(raiz);
-    printf("Resultado da expressão: %d\n", resultado);
+    printf("Expressão posfixa: ");
+    posfixa(&minhaArvore);
+
+    printf("Resultado da expressão: %d\n", resultadoArvore(&minhaArvore));
 
     return 0;
 }

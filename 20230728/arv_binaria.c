@@ -1,64 +1,116 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdbool.h>
+#include <string.h>
 #include "arv_binaria.h"
 
-// Função para criar um novo nó
-NO* createNode(char data) {
-    NO* newNode = malloc(sizeof(NO));
-    newNode->chave = data;
-    newNode->esquerda = NULL;
-    newNode->direita = NULL;
-    return newNode;
+void inicializarArvore (ARVORE *a){
+    a->raiz = NULL;
 }
 
-// Função para criar uma nova pilha
-PILHA* createStack() {
-    PILHA* pilha = malloc(sizeof(PILHA));
-    pilha->topo = NULL;
-    return pilha;
+NO *inserir (NO *raiz, NO *no){
+    if (raiz == NULL) return no;
+    if (raiz->esquerda == NULL) raiz->esquerda = inserir(raiz->esquerda, no);
+    else raiz->direita = inserir(raiz->direita, no);
+    return raiz;
 }
 
-// Função para verificar se a pilha está vazia
-int isStackEmpty(PILHA* pilha) {
-    return pilha->topo == NULL;
+bool adiciona_aux (ARVORE *a, NO *novo){
+    a->raiz = inserir (a->raiz, novo);
+    return true;
 }
 
-// Função para empilhar um elemento na pilha
-void push(PILHA* pilha, NO* chave) {
-    NoPilha* newNode = malloc(sizeof(NoPilha));
-    newNode->chave = chave;
-    newNode->proximo = pilha->topo;
-    pilha->topo = newNode;
+bool adiciona (ARVORE* a, char valor) {
+    NO* novoNo = malloc(sizeof(NO));
+    novoNo->chave = valor;
+    novoNo->esquerda = NULL;
+    novoNo->direita = NULL;
+    adiciona_aux(a, novoNo);
+    return true;
 }
 
-// Função para desempilhar um elemento da pilha
-NO* pop(PILHA* pilha) {
-    if (isStackEmpty(pilha)) {
-        return NULL;
+void pre_ordem (NO *raiz){
+    if (!raiz) return;
+    printf("%c ", raiz->chave);
+    pre_ordem(raiz->esquerda);
+    pre_ordem(raiz->direita);
+}
+
+void prefixa (ARVORE *a){
+    pre_ordem(a->raiz);
+    printf("\n");
+}
+
+void in_ordem(NO *raiz) {
+    if (raiz != NULL) {
+        if (raiz->esquerda != NULL && raiz->direita != NULL && ehOperador(raiz->chave)) {
+            printf("(");
+            in_ordem(raiz->esquerda);
+            printf("%c", raiz->chave);
+            in_ordem(raiz->direita);
+            printf(")");
+        } else {
+            printf("%c", raiz->chave);
+        }
     }
-
-    NO* chave = pilha->topo->chave;
-    NoPilha* temp = pilha->topo;
-    pilha->topo = pilha->topo->proximo;
-    free(temp);
-    return chave;
 }
 
-// Função para obter o topo da pilha sem desempilhar
-NO* peek(PILHA* pilha) {
-    if (isStackEmpty(pilha)) {
-        return NULL;
-    }
-    return pilha->topo->chave;
+void infixa(ARVORE *a) {
+    in_ordem(a->raiz);
+    printf("\n");
 }
 
-// Função para verificar se o caractere é um operador (+, -, *, /)
-int isOperator(char ch) {
+void pos_ordem (NO *raiz){
+    if (!raiz) return;
+    pos_ordem(raiz->esquerda);
+    pos_ordem(raiz->direita);
+    printf("%c ", raiz->chave);
+}
+
+void posfixa (ARVORE *a){
+    pos_ordem (a->raiz);
+    printf("\n");
+}
+
+void inicializarPilha (PILHA *p){
+    p->topo = NULL;
+}
+
+int pilhaVazia (PILHA *p) {
+    return p->topo == NULL;
+}
+
+int push (PILHA *p, NO *nova_chave){
+    NoPilha *i = malloc (sizeof(NoPilha));
+    if (i == NULL) return 0;
+    i->chave = nova_chave;
+    i->proximo = p->topo;
+    p->topo = i;
+    return 1;
+}
+
+int pop (PILHA *p){
+    if (p->topo == NULL) return 0;
+    NoPilha *i = p->topo;
+    p->topo = p->topo->proximo;
+    free(i);
+    return 1;
+}
+
+NO *peek(PILHA *p){
+    if(pilhaVazia(p)) return NULL;
+    return p->topo->chave;
+}
+
+bool ehOperador(char ch) {
     return (ch == '+' || ch == '-' || ch == '*' || ch == '/');
 }
 
-// Função para verificar a precedência do operador
-int precedence(char ch) {
+bool ehOperando(char ch) {
+    return (ch >= 'a' && ch <= 'z') || (ch >= 'A' && ch <= 'Z') || (ch >= '0' && ch <= '9');
+}
+
+bool precedencia(char ch) {
     if (ch == '+' || ch == '-')
         return 1;
     else if (ch == '*' || ch == '/')
@@ -66,127 +118,111 @@ int precedence(char ch) {
     return 0;
 }
 
-// Função para converter a expressão infixa em uma árvore binária
-NO* infixToExpressionTree(char expression[]) {
-    PILHA* operadores = createStack();
-    PILHA* operandos = createStack();
-    int i = 0;
+NO* criarNo(char valor) {
+    NO* novoNo = malloc(sizeof(NO));
+    novoNo->chave = valor;
+    novoNo->esquerda = NULL;
+    novoNo->direita = NULL;
+    return novoNo;
+}
 
-    while (expression[i] != '\0') {
-        if (expression[i] == ' ') {
-            i++;
+ARVORE construirArvore(char *expressao) {
+    PILHA operadores;
+    PILHA operandos;
+    inicializarPilha(&operadores);
+    inicializarPilha(&operandos);
+
+    int tamanho = strlen(expressao);
+    for (int i = 0; i < tamanho; i++) {
+        char ch = expressao[i];
+        if (ch == ' ')
             continue;
-        } else if (expression[i] == '(') {
-            push(operadores, createNode(expression[i]));
-        } else if (expression[i] == ')') {
-            while (!isStackEmpty(operadores) && peek(operadores)->chave != '(') {
-                NO* op = pop(operadores);
-                op->direita = pop(operandos);
-                op->esquerda = pop(operandos);
-                push(operandos, op);
+        else if (ehOperando(ch)) {
+            NO* novoNo = criarNo(ch);
+            push(&operandos, novoNo);
+        } else if (ch == '(') {
+            push(&operadores, criarNo(ch));
+        } else if (ch == ')') {
+            while (!pilhaVazia(&operadores) && peek(&operadores)->chave != '(') {
+                NO* operador = peek(&operadores);
+                pop(&operadores);
+
+                NO* direita = peek(&operandos);
+                pop(&operandos);
+
+                NO* esquerda = peek(&operandos);
+                pop(&operandos);
+
+                operador->esquerda = esquerda;
+                operador->direita = direita;
+
+                push(&operandos, operador);
             }
-            pop(operadores); // Remover o '(' da pilha de operadores
-        } else if (isOperator(expression[i])) {
-            while (!isStackEmpty(operadores) && precedence(expression[i]) <= precedence(peek(operadores)->chave)) {
-                NO* op = pop(operadores);
-                op->direita = pop(operandos);
-                op->esquerda = pop(operandos);
-                push(operandos, op);
+            pop(&operadores);
+        } else { // Operator
+            while (!pilhaVazia(&operadores) && precedencia(ch) <= precedencia(peek(&operadores)->chave)) {
+                NO* operador = peek(&operadores);
+                pop(&operadores);
+
+                NO* direita = peek(&operandos);
+                pop(&operandos);
+
+                NO* esquerda = peek(&operandos);
+                pop(&operandos);
+
+                operador->esquerda = esquerda;
+                operador->direita = direita;
+
+                push(&operandos, operador);
             }
-            push(operadores, createNode(expression[i]));
-        } else {
-            push(operandos, createNode(expression[i]));
+            push(&operadores, criarNo(ch));
         }
-        i++;
     }
 
-    while (!isStackEmpty(operadores)) {
-        NO* op = pop(operadores);
-        op->direita = pop(operandos);
-        op->esquerda = pop(operandos);
-        push(operandos, op);
+    while (!pilhaVazia(&operadores)) {
+        NO* operador = peek(&operadores);
+        pop(&operadores);
+
+        NO* direita = peek(&operandos);
+        pop(&operandos);
+
+        NO* esquerda = peek(&operandos);
+        pop(&operandos);
+
+        operador->esquerda = esquerda;
+        operador->direita = direita;
+
+        push(&operandos, operador);
     }
 
-    NO* root = pop(operandos);
-    return root;
+    ARVORE minhaArvore;
+    minhaArvore.raiz = peek(&operandos);
+    return minhaArvore;
 }
 
-// Função para percorrer a árvore em ordem subárvore esquerda - raiz - subárvore direita (infixa)
-void inorderTraversal(NO* root) {
-    if (root != NULL) {
-        inorderTraversal(root->esquerda);
-        printf("%c ", root->chave);
-        inorderTraversal(root->direita);
-    }
+int resultadoArvore (ARVORE *a){ 
+    return resultadoArvoreAux(a->raiz);
 }
 
-// Função para percorrer a árvore em ordem subárvore esquerda - subárvore direita - raiz (posfixa)
-void postorderTraversal(NO* root) {
-    if (root != NULL) {
-        postorderTraversal(root->esquerda);
-        postorderTraversal(root->direita);
-        printf("%c ", root->chave);
-    }
-}
+int resultadoArvoreAux (NO* raiz) {
+    if (!raiz) return 0;
+    
+    if (ehOperando(raiz->chave)) return raiz->chave;
 
-// Função para percorrer a árvore em ordem raiz - subárvore esquerda - subárvore direita (prefixa)
-void preorderTraversal(NO* root) {
-    if (root != NULL) {
-        printf("%c ", root->chave);
-        preorderTraversal(root->esquerda);
-        preorderTraversal(root->direita);
-    }
-}
+    int direita = resultadoArvoreAux (raiz->direita);
+    int esquerda = resultadoArvoreAux (raiz->esquerda);
 
-// Função para calcular o valor da expressão aritmética representada pela árvore
-int evaluateExpression(NO* root) {
-    if (root == NULL) {
-        return 0;
-    }
-
-    if (root->esquerda == NULL && root->direita == NULL) {
-        // Se o nó for uma folha, retorna o valor do caractere (correspondente ao valor no alfabeto ASCII)
-        return root->chave - 'a' + 97;
-    }
-
-    int leftValue = evaluateExpression(root->esquerda);
-    int rightValue = evaluateExpression(root->direita);
-
-    switch (root->chave) {
+    switch (raiz->chave) {
         case '+':
-            return leftValue + rightValue;
+            return esquerda + direita;
         case '-':
-            return leftValue - rightValue;
+            return esquerda - direita;
         case '*':
-            return leftValue * rightValue;
+            return esquerda * direita;
         case '/':
-            return leftValue / rightValue;
+            return esquerda / direita;
         default:
             return 0;
     }
 }
 
-// Função para imprimir a expressão matemática em notação infixa com parênteses
-void Infixa(NO* root) {
-    if (root != NULL) {
-        if (root->esquerda != NULL && root->direita != NULL && isOperator(root->chave)) {
-            printf("(");
-            Infixa(root->esquerda);
-            printf(" %c ", root->chave);
-            Infixa(root->direita);
-            printf(")");
-        } else {
-            printf("%c", root->chave);
-        }
-    }
-}
-
-// Função para imprimir a expressão matemática em notação posfixa
-void Posfixa(NO* root) {
-    postorderTraversal(root);
-}
-
-// Função para imprimir a expressão matemática em notação prefixa
-void Prefixa(NO* root) {
-    preorderTraversal(root);
-}
