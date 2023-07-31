@@ -2,7 +2,7 @@
 #define ARVORE_BINARIA_H
 
 typedef struct NO{
-    char chave;
+    int chave;
     struct NO* esquerda;
     struct NO* direita;
 } NO;
@@ -24,13 +24,18 @@ typedef struct {
 void inicializarArvore (ARVORE* a);
 NO* inserir (NO* raiz, NO* no);
 bool adiciona_aux(ARVORE* a, NO* novo);
-bool adiciona (ARVORE* a, char valor);
+bool adiciona (ARVORE* a, int valor);
 void pre_ordem (NO* raiz);
+void pre_ordem_char (NO* raiz);
 void prefixa (ARVORE *a);
 void in_ordem (NO* raiz);
+void in_ordem_char (NO *raiz);
 void infixa(ARVORE *a);
 void pos_ordem (NO* raiz);
+void pos_ordem_char (NO* raiz);
 void posfixa (ARVORE *a);
+void liberar_arvore (NO *raiz);
+void reinicializarArvore (ARVORE *a);
 //Pilha
 void inicializarPilha (PILHA *p);
 int pilhaVazia (PILHA *p);

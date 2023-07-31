@@ -8,10 +8,23 @@ void inicializarArvore (ARVORE *a){
     a->raiz = NULL;
 }
 
-NO *inserir (NO *raiz, NO *no){
-    if (raiz == NULL) return no;
-    if (raiz->esquerda == NULL) raiz->esquerda = inserir(raiz->esquerda, no);
-    else raiz->direita = inserir(raiz->direita, no);
+NO* inserir(NO* raiz, NO* no) {
+    if (raiz == NULL) {
+        return no;
+    }
+
+    if (raiz->esquerda == NULL) {
+        raiz->esquerda = no;
+    } else if (raiz->direita == NULL) {
+        raiz->direita = no;
+    } else {
+        if (raiz->esquerda->esquerda == NULL || raiz->esquerda->direita == NULL) {
+            raiz->esquerda = inserir(raiz->esquerda, no);
+        } else if (raiz->direita->esquerda == NULL || raiz->direita->direita == NULL) {
+            raiz->direita = inserir(raiz->direita, no);
+        }
+    }
+
     return raiz;
 }
 
@@ -20,7 +33,7 @@ bool adiciona_aux (ARVORE *a, NO *novo){
     return true;
 }
 
-bool adiciona (ARVORE* a, char valor) {
+bool adiciona (ARVORE* a, int valor) {
     NO* novoNo = malloc(sizeof(NO));
     novoNo->chave = valor;
     novoNo->esquerda = NULL;
@@ -31,23 +44,44 @@ bool adiciona (ARVORE* a, char valor) {
 
 void pre_ordem (NO *raiz){
     if (!raiz) return;
-    printf("%c ", raiz->chave);
+    printf("%d ", raiz->chave);
     pre_ordem(raiz->esquerda);
     pre_ordem(raiz->direita);
 }
 
+void in_ordem (NO *raiz){
+    if (!raiz) return;
+    in_ordem(raiz->esquerda);
+    printf("%d ", raiz->chave);
+    in_ordem(raiz->direita);
+}
+
+void pos_ordem (NO *raiz){
+    if (!raiz) return;
+    pos_ordem(raiz->esquerda);
+    pos_ordem(raiz->direita);
+    printf("%d ", raiz->chave);
+}
+
+void pre_ordem_char (NO *raiz){
+    if (!raiz) return;
+    printf("%c ", raiz->chave);
+    pre_ordem_char (raiz->esquerda);
+    pre_ordem_char (raiz->direita);
+}
+
 void prefixa (ARVORE *a){
-    pre_ordem(a->raiz);
+    pre_ordem_char (a->raiz);
     printf("\n");
 }
 
-void in_ordem(NO *raiz) {
+void in_ordem_char (NO *raiz) {
     if (raiz != NULL) {
         if (raiz->esquerda != NULL && raiz->direita != NULL && ehOperador(raiz->chave)) {
             printf("(");
-            in_ordem(raiz->esquerda);
+            in_ordem_char (raiz->esquerda);
             printf("%c", raiz->chave);
-            in_ordem(raiz->direita);
+            in_ordem_char (raiz->direita);
             printf(")");
         } else {
             printf("%c", raiz->chave);
@@ -55,21 +89,34 @@ void in_ordem(NO *raiz) {
     }
 }
 
-void infixa(ARVORE *a) {
-    in_ordem(a->raiz);
+void infixa (ARVORE *a) {
+    in_ordem_char (a->raiz);
     printf("\n");
 }
 
-void pos_ordem (NO *raiz){
+void pos_ordem_char (NO *raiz){
     if (!raiz) return;
-    pos_ordem(raiz->esquerda);
-    pos_ordem(raiz->direita);
+    pos_ordem_char(raiz->esquerda); // pos_ordem_char(raiz->direita);
+    pos_ordem_char(raiz->direita); // pos_ordem_char(raiz->esquerda);
     printf("%c ", raiz->chave);
 }
 
 void posfixa (ARVORE *a){
-    pos_ordem (a->raiz);
+    pos_ordem_char (a->raiz);
     printf("\n");
+}
+
+void liberar_arvore (NO* raiz){
+    if (raiz == NULL) return;
+
+    liberar_arvore(raiz->esquerda);
+    liberar_arvore(raiz->direita);
+    free(raiz);
+}
+
+void reinicializarArvore (ARVORE* a){
+    liberar_arvore(a->raiz);
+    a->raiz = NULL;
 }
 
 void inicializarPilha (PILHA *p){
